@@ -1,0 +1,244 @@
+/**
+ * Zoom into an object.
+ *
+ * @since 1.0.0
+ */
+
+import type * as Pipeable from "effect/Pipeable"
+import type * as Predicate from "effect/Predicate"
+import type * as ReadonlyArray from "effect/ReadonlyArray"
+import type * as Types from "effect/Types"
+import * as internal from "./internal/lens.js"
+import type * as Optional from "./Optional.js"
+
+/**
+ * @since 1.0.0
+ * @category type id
+ */
+export const TypeId: unique symbol = internal.TypeId
+
+/**
+ * @since 1.0.0
+ * @category type id
+ */
+export type TypeId = typeof TypeId
+
+/**
+ * @category models
+ * @since 1.0.0
+ */
+export interface Lens<Self, Value> extends Lens.Variance<Self, Value>, Pipeable.Pipeable {
+  readonly get: (self: Self) => Value
+  readonly set: {
+    (self: Self, value: Value): Self
+    (value: Value): (self: Self) => Self
+  }
+}
+
+/**
+ * @category models
+ * @since 1.0.0
+ */
+export declare namespace Lens {
+  /**
+   * @category models
+   * @since 1.0.0
+   */
+  export interface Variance<Self, Value> {
+    readonly [TypeId]: {
+      readonly _Self: Types.Invariant<Self>
+      readonly _Value: Types.Invariant<Value>
+    }
+  }
+
+  /**
+   * @category models
+   * @since 1.0.0
+   */
+  export type Any = Lens<any, any>
+}
+
+/**
+ * @category constructors
+ * @since 1.0.0
+ */
+export const make: <Self, Value>(
+  get: (self: Self) => Value,
+  set: (self: Self, value: Value) => Self
+) => Lens<Self, Value> = internal.make
+
+/**
+ * @category combinators
+ * @since 1.0.0
+ */
+export const id: <Self>() => Lens<Self, Self> = internal.id
+
+/**
+ * @category struct combinators
+ * @since 1.0.0
+ */
+export const prop: {
+  <Value, A extends keyof Value>(prop: A): <Self>(lens: Lens<Self, Value>) => Lens<Self, Value[A]>
+  <Value, A extends keyof Value, B extends keyof Value[A]>(
+    a: A,
+    b: B
+  ): <Self>(lens: Lens<Self, Value>) => Lens<Self, Value[A][B]>
+  <Value, A extends keyof Value, B extends keyof Value[A], C extends keyof Value[A][B]>(
+    a: A,
+    b: B,
+    c: C
+  ): <Self>(lens: Lens<Self, Value>) => Lens<Self, Value[A][B][C]>
+
+  <Value, A extends keyof Value, B extends keyof Value[A], C extends keyof Value[A][B], D extends keyof Value[A][B][C]>(
+    a: A,
+    b: B,
+    c: C,
+    d: D
+  ): <Self>(lens: Lens<Self, Value>) => Lens<Self, Value[A][B][C][D]>
+  <
+    Value,
+    A extends keyof Value,
+    B extends keyof Value[A],
+    C extends keyof Value[A][B],
+    D extends keyof Value[A][B][C],
+    E extends keyof Value[A][B][C][D]
+  >(
+    a: A,
+    b: B,
+    c: C,
+    d: D,
+    e: E
+  ): <Self>(lens: Lens<Self, Value>) => Lens<Self, Value[A][B][C][D][E]>
+
+  <Self, Value, A extends keyof Value>(lens: Lens<Self, Value>, a: A): Lens<Self, Value[A]>
+  <Self, Value, A extends keyof Value, B extends keyof Value[A]>(
+    lens: Lens<Self, Value>,
+    a: A,
+    b: B
+  ): Lens<Self, Value[A][B]>
+  <Self, Value, A extends keyof Value, B extends keyof Value[A], C extends keyof Value[A][B]>(
+    lens: Lens<Self, Value>,
+    a: A,
+    b: B,
+    c: C
+  ): Lens<Self, Value[A][B][C]>
+  <
+    Self,
+    Value,
+    A extends keyof Value,
+    B extends keyof Value[A],
+    C extends keyof Value[A][B],
+    D extends keyof Value[A][B][C]
+  >(
+    lens: Lens<Self, Value>,
+    a: A,
+    b: B,
+    c: C,
+    d: D
+  ): Lens<Self, Value[A][B][C][D]>
+  <
+    Self,
+    Value,
+    A extends keyof Value,
+    B extends keyof Value[A],
+    C extends keyof Value[A][B],
+    D extends keyof Value[A][B][C],
+    E extends keyof Value[A][B][C][D]
+  >(
+    lens: Lens<Self, Value>,
+    a: A,
+    b: B,
+    c: C,
+    d: D,
+    e: E
+  ): Lens<Self, Value[A][B][C][D][E]>
+} = internal.prop
+
+/**
+ * @category combinators
+ * @since 1.0.0
+ */
+export const compose: {
+  <B, C>(that: Lens<B, C>): <A>(self: Lens<A, B>) => Lens<A, C>
+  <A, B, C>(self: Lens<A, B>, that: Lens<B, C>): Lens<A, C>
+} = internal.compose
+
+/**
+ * @category array combinators
+ * @since 1.0.0
+ */
+export const append: {
+  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>, self: Self, last: A): Self
+  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>): {
+    (self: Self, last: A): Self
+    (last: A): (self: Self) => Self
+  }
+
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>, self: Self, last: A): Self
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>): {
+    (self: Self, last: A): Self
+    (last: A): (self: Self) => Self
+  }
+
+  <Self, A>(lens: Lens<Self, Array<A>>, self: Self, last: A): Self
+  <Self, A>(lens: Lens<Self, Array<A>>): {
+    (self: Self, last: A): Self
+    (last: A): (self: Self) => Self
+  }
+} = internal.append
+
+/**
+ * @category array combinators
+ * @since 1.0.0
+ */
+export const appendAll: {
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>, self: Self, that: ReadonlyArray<A>): Self
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>): {
+    (self: Self, that: ReadonlyArray<A>): Self
+    (that: ReadonlyArray<A>): (self: Self) => Self
+  }
+
+  <Self, A>(lens: Lens<Self, Array<A>>, self: Self, that: ReadonlyArray<A>): Self
+  <Self, A>(lens: Lens<Self, Array<A>>): {
+    (self: Self, that: ReadonlyArray<A>): Self
+    (that: ReadonlyArray<A>): (self: Self) => Self
+  }
+} = internal.appendAll
+
+/**
+ * @category array combinators
+ * @since 1.0.0
+ */
+export const headNonEmpty: {
+  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyReadonlyArray<A>>): Lens<Self, A>
+  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>): Lens<Self, A>
+} = internal.headNonEmpty
+
+/**
+ * @category combinators
+ * @since 1.0.0
+ */
+export const filter: {
+  <A, B extends A, Self>(lens: Lens<Self, A>, refinement: Predicate.Refinement<A, B>): Optional.Optional<Self, B>
+  <A, B extends A>(refinement: Predicate.Refinement<A, B>): <Self>(lens: Lens<Self, A>) => Optional.Optional<Self, B>
+
+  <A, Self>(lens: Lens<Self, A>, predicate: Predicate.Predicate<A>): Optional.Optional<Self, A>
+  <A>(predicate: Predicate.Predicate<A>): <Self>(lens: Lens<Self, A>) => Optional.Optional<Self, A>
+} = internal.filter
+
+/**
+ * @category combinators
+ * @since 1.0.0
+ */
+export const extract: {
+  <Self, Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+    lens: Lens<Self, Value>,
+    tag: Tag,
+    tagValue: TagValue
+  ): Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValue }>>
+
+  <Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+    tag: Tag,
+    tagValue: TagValue
+  ): <Self>(lens: Lens<Self, Value>) => Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValue }>>
+} = internal.extract
