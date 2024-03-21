@@ -1,6 +1,7 @@
 import { Option, pipe } from "effect"
 import { Lens, Optional } from "effect-monocle"
 import { expect, test } from "vitest"
+import { testLensLaws, testOptionalLaws } from "./laws.js"
 
 const obj = {
   type: "obj1" as const,
@@ -44,14 +45,22 @@ test.each(
   expect(propLens.set(obj, 2)).toStrictEqual({ ...obj, prop: 2 })
   expect(pipe(obj, propLens.set(2))).toStrictEqual({ ...obj, prop: 2 })
 
+  testLensLaws(propLens, [obj, 2])
+
   expect(helloLens.set(obj, "patrik")).toEqual({ ...obj, another: { hello: "patrik" } })
   expect(pipe(obj, helloLens.set("patrik"))).toEqual({ ...obj, another: { hello: "patrik" } })
+
+  testLensLaws(helloLens, [obj, "patrik"])
 
   expect(dataLens.set(obj, { structure: 1 })).toEqual({ ...obj, super: { nested: { data: { structure: 1 } } } })
   expect(pipe(obj, dataLens.set({ structure: 1 }))).toEqual({ ...obj, super: { nested: { data: { structure: 1 } } } })
 
+  testLensLaws(dataLens, [obj, { structure: 1 }])
+
   expect(structureLens.set(obj, 1)).toEqual({ ...obj, super: { nested: { data: { structure: 1 } } } })
   expect(pipe(obj, structureLens.set(1))).toEqual({ ...obj, super: { nested: { data: { structure: 1 } } } })
+
+  testLensLaws(structureLens, [obj, 1])
 })
 
 test.each(
@@ -71,6 +80,8 @@ test.each(
     super: { nested: { data: { structure: -1 } } }
   })
   expect(pipe(obj, lens.set(-1))).toEqual({ ...obj, super: { nested: { data: { structure: -1 } } } })
+
+  testLensLaws(lens, [obj, -1])
 })
 
 test("append", () => {
@@ -99,10 +110,14 @@ test("headNonEmpty", () => {
   expect(lens.get(obj)).toEqual(1)
   expect(lens.set(obj, 3)).toEqual({ ...obj, valuesNonEmpty: [3, 2] })
 
+  testLensLaws(lens, [obj, 3])
+
   const lens2 = Lens.prop(objLens, "valuesNonEmpty").pipe((_) => Lens.headNonEmpty(_)) // TODO weird type inference
 
   expect(lens2.get(obj)).toEqual(1)
   expect(lens2.set(obj, 3)).toEqual({ ...obj, valuesNonEmpty: [3, 2] })
+
+  testLensLaws(lens, [obj, 3])
 })
 
 const obj2 = {
@@ -135,4 +150,25 @@ test("extract", () => {
 
   expect(optional.set(myObj, [1])).toStrictEqual({ value: { ...obj, valuesNonEmpty: [1] } })
   expect(optional.set(myObj2, [1])).toStrictEqual(myObj2)
+
+  testOptionalLaws(optional, [myObj, [1] as const], [myObj2, [1] as const])
+})
+
+test("some", () => {
+  const obj1 = { value: Option.some("a") }
+  const obj2 = { value: Option.none() }
+
+  const optional = pipe(
+    Lens.id<typeof obj1>(),
+    Lens.prop("value"),
+    Lens.some
+  )
+
+  expect(optional.set(obj1, "b")).toEqual({ value: Option.some("b") })
+  expect(optional.set(obj2, "b")).toEqual({ value: Option.none() })
+
+  expect(optional.getOption(obj1)).toEqual(Option.some("a"))
+  expect(optional.getOption(obj2)).toEqual(Option.none())
+
+  testOptionalLaws(optional, [obj1, "b"], [obj2, "b"])
 })

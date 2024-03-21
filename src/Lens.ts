@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 
+import type * as Option from "effect/Option"
 import type * as Pipeable from "effect/Pipeable"
 import type * as Predicate from "effect/Predicate"
 import type * as ReadonlyArray from "effect/ReadonlyArray"
@@ -68,13 +69,13 @@ export const make: <Self, Value>(
 ) => Lens<Self, Value> = internal.make
 
 /**
- * @category combinators
+ * @category constructors
  * @since 1.0.0
  */
 export const id: <Self>() => Lens<Self, Self> = internal.id
 
 /**
- * @category struct combinators
+ * @category struct
  * @since 1.0.0
  */
 export const prop: {
@@ -155,7 +156,7 @@ export const prop: {
 } = internal.prop
 
 /**
- * @category combinators
+ * @category composition
  * @since 1.0.0
  */
 export const compose: {
@@ -164,7 +165,13 @@ export const compose: {
 } = internal.compose
 
 /**
- * @category array combinators
+ * @category option
+ * @since 1.0.0
+ */
+export const some: <A, B>(lens: Lens<A, Option.Option<B>>) => Optional.Optional<A, B> = internal.some
+
+/**
+ * @category array
  * @since 1.0.0
  */
 export const append: {
@@ -188,7 +195,7 @@ export const append: {
 } = internal.append
 
 /**
- * @category array combinators
+ * @category array
  * @since 1.0.0
  */
 export const appendAll: {
@@ -206,7 +213,7 @@ export const appendAll: {
 } = internal.appendAll
 
 /**
- * @category array combinators
+ * @category array
  * @since 1.0.0
  */
 export const headNonEmpty: {
@@ -227,7 +234,7 @@ export const filter: {
 } = internal.filter
 
 /**
- * @category combinators
+ * @category struct
  * @since 1.0.0
  */
 export const extract: {

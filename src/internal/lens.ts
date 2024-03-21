@@ -1,44 +1,16 @@
 import { dual, identity, pipe } from "effect/Function"
 import * as Option from "effect/Option"
-import * as Pipeable from "effect/Pipeable"
 import * as Predicate from "effect/Predicate"
 import * as ReadonlyArray from "effect/ReadonlyArray"
 import type * as Lens from "../Lens.js"
 import * as Optional from "../Optional.js"
+import * as circular from "./lens-circular.js"
+import * as optional_circular from "./optional-circular.js"
 
-export const TypeId: Lens.TypeId = Symbol.for(
-  "effect-monocle/Lens/TypeId"
-) as Lens.TypeId
-
-/** @internal */
-const variance = {
-  _Self: (_: any) => _,
-  _Value: (_: any) => _
-}
+export const TypeId: Lens.TypeId = circular.TypeId
 
 /** @internal */
-class LensImpl<Self, Value> implements Lens.Lens<Self, Value> {
-  readonly [TypeId] = variance
-
-  constructor(
-    readonly get: (self: Self) => Value,
-    readonly set: {
-      (self: Self, value: Value): Self
-      (value: Value): (self: Self) => Self
-    }
-  ) {}
-
-  pipe() {
-    // eslint-disable-next-line prefer-rest-params
-    return Pipeable.pipeArguments(this, arguments)
-  }
-}
-
-/** @internal */
-export const make = <Self, Value>(
-  get: (self: Self) => Value,
-  set: (self: Self, value: Value) => Self
-): Lens.Lens<Self, Value> => new LensImpl(get, dual(2, set))
+export const make = circular.make
 
 /** @internal */
 export const isLens = (u: unknown): u is Lens.Lens<unknown, unknown> =>
@@ -192,3 +164,18 @@ export const extract = dual(3 as any, <Self, Value, const Tag extends keyof Valu
     lens,
     (value): value is Extract<Value, { [K in Tag]: TagValue }> => value[tag] === tagValue
   ))
+
+/** @internal */
+export const some = <A, B>(that: Lens.Lens<A, Option.Option<B>>): Optional.Optional<A, B> =>
+  optional_circular.make(
+    (self) => that.get(self),
+    (self, value) => {
+      const v = that.get(self)
+
+      if (Option.isNone(v)) {
+        return self
+      }
+
+      return that.set(self, Option.some(value))
+    }
+  )

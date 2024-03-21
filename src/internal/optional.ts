@@ -1,44 +1,15 @@
 import { ReadonlyArray } from "effect"
 import { dual, pipe } from "effect/Function"
 import * as Option from "effect/Option"
-import * as Pipeable from "effect/Pipeable"
 import * as Predicate from "effect/Predicate"
 import type * as Lens from "../Lens.js"
 import type * as Optional from "../Optional.js"
+import * as circular from "./optional-circular.js"
 
-export const TypeId: Optional.TypeId = Symbol.for(
-  "effect-monocle/Optional/TypeId"
-) as Optional.TypeId
-
-/** @internal */
-const variance = {
-  _Self: (_: any) => _,
-  _Value: (_: any) => _
-}
+export const TypeId: Optional.TypeId = circular.TypeId
 
 /** @internal */
-class OptionalImpl<Self, Value> implements Optional.Optional<Self, Value> {
-  readonly [TypeId] = variance
-
-  constructor(
-    readonly getOption: (self: Self) => Option.Option<Value>,
-    readonly set: {
-      (self: Self, value: Value): Self
-      (value: Value): (self: Self) => Self
-    }
-  ) {}
-
-  pipe() {
-    // eslint-disable-next-line prefer-rest-params
-    return Pipeable.pipeArguments(this, arguments)
-  }
-}
-
-/** @internal */
-export const make = <Self, Value>(
-  get: (self: Self) => Option.Option<Value>,
-  set: (self: Self, value: Value) => Self
-): Optional.Optional<Self, Value> => new OptionalImpl(get, dual(2, set))
+export const make = circular.make
 
 /** @internal */
 export const isOptional = (u: unknown): u is Optional.Optional<unknown, unknown> =>
@@ -259,3 +230,18 @@ export const composeLens = dual(
       }
     )
 )
+
+/**
+ * @category combinators
+ * @since 1.0.0
+ */
+export const some = <A, B>(optional: Optional.Optional<A, Option.Option<B>>): Optional.Optional<A, B> =>
+  make((self) => Option.flatten(optional.getOption(self)), (self, value) => {
+    const v = Option.flatten(optional.getOption(self))
+
+    if (Option.isNone(v)) {
+      return self
+    }
+
+    return optional.set(self, Option.some(value))
+  })
