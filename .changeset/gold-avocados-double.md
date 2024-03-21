@@ -1,5 +1,0 @@
----
-"effect-monocle": minor
----
-
-init
