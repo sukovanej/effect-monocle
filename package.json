@@ -1,7 +1,7 @@
 {
   "name": "effect-monocle",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "author": "Milan Suk <Milansuk@email.cz>",
   "description": "Port of some monocle-ts features to effect-ts",
@@ -40,6 +40,7 @@
     "@babel/core": "^7.24.0",
     "@babel/plugin-transform-export-namespace-from": "^7.23.4",
     "@babel/plugin-transform-modules-commonjs": "^7.23.3",
+    "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@effect/build-utils": "^0.7.6",
     "@effect/docgen": "^0.3.8",
@@ -67,5 +68,10 @@
   },
   "peerDependencies": {
     "effect": "^2.4.7"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@changesets/assemble-release-plan@6.0.0": "patches/@changesets__assemble-release-plan@6.0.0.patch"
+    }
   }
 }
