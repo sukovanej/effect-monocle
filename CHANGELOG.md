@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.2.0
+
+### Minor Changes
+
+- [`e5e9de1`](https://github.com/sukovanej/effect-monocle/commit/e5e9de1b07b7810844452c5f77a8b259b070ff63) Thanks [@sukovanej](https://github.com/sukovanej)! - Add Lens.some and Optional.some.
+
 ## 0.1.0
 
 ### Minor Changes
