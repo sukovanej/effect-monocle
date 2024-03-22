@@ -201,3 +201,12 @@ test("modify", () => {
     another: { hello: "world", world: "test", n: 2 }
   })
 })
+
+test("test that nested set works", () => {
+  const a = { a: { b: { c: 1 } } }
+  type A = typeof a
+  const lens = pipe(Lens.id<A>(), Lens.prop("a"), Lens.prop("b"))
+  const r = lens.set(a, { c: 2 })
+  expect({ a: { b: { c: 2 } } }).toEqual(r)
+  testLensLaws(lens, [a, { c: 2 }])
+})

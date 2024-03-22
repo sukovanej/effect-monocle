@@ -75,7 +75,7 @@ const _setPropNested = (self: any, value: any, [prop, ...props]: ReadonlyArray<s
 export const _prop = (lens: Lens.Lens.Any, props: ReadonlyArray<string>) => {
   return make(
     (self) => _getPropNested(lens.get(self), props),
-    (self, value) => _setPropNested(lens.get(self), value, props)
+    (self, value) => lens.set(self, _setPropNested(lens.get(self), value, props))
   )
 }
 
