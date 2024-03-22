@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.3.0
+
+### Minor Changes
+
+- [#4](https://github.com/sukovanej/effect-monocle/pull/4) [`9ce9596`](https://github.com/sukovanej/effect-monocle/commit/9ce95962cf1a919c5e5656bf3e4f51d129eff19c) Thanks [@sukovanej](https://github.com/sukovanej)! - Add `Lens.pick` and `modify` method.
+
 ## 0.2.1
 
 ### Patch Changes
