@@ -2,6 +2,7 @@ import { dual, identity, pipe } from "effect/Function"
 import * as Option from "effect/Option"
 import * as Predicate from "effect/Predicate"
 import * as ReadonlyArray from "effect/ReadonlyArray"
+import * as Struct from "effect/Struct"
 import type * as Lens from "../Lens.js"
 import * as Optional from "../Optional.js"
 import * as circular from "./lens-circular.js"
@@ -179,3 +180,22 @@ export const some = <A, B>(that: Lens.Lens<A, Option.Option<B>>): Optional.Optio
       return that.set(self, Option.some(value))
     }
   )
+
+/** @internal */
+export const pick = (...args: ReadonlyArray<any>): any => {
+  if (isLens(args[0])) {
+    return _pick(...(args as readonly [any, any]))
+  }
+
+  return (lens: Lens.Lens.Any) => _pick(lens, args)
+}
+
+/** @internal */
+const _pick = <Self, Value>(
+  lens: Lens.Lens<Self, Value>,
+  keys: ReadonlyArray<string>
+) =>
+  make<Self, Value>((self) => Struct.pick(lens.get(self), ...keys as any) as any, (self, value) => {
+    const v = lens.get(self)
+    return lens.set(self, { ...v, ...value })
+  })

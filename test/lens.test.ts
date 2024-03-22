@@ -7,7 +7,9 @@ const obj = {
   type: "obj1" as const,
   prop: 1,
   another: {
-    hello: "world"
+    hello: "world",
+    world: "test",
+    n: 1
   },
   super: {
     nested: {
@@ -47,8 +49,8 @@ test.each(
 
   testLensLaws(propLens, [obj, 2])
 
-  expect(helloLens.set(obj, "patrik")).toEqual({ ...obj, another: { hello: "patrik" } })
-  expect(pipe(obj, helloLens.set("patrik"))).toEqual({ ...obj, another: { hello: "patrik" } })
+  expect(helloLens.set(obj, "patrik")).toEqual({ ...obj, another: { ...obj.another, hello: "patrik" } })
+  expect(pipe(obj, helloLens.set("patrik"))).toEqual({ ...obj, another: { ...obj.another, hello: "patrik" } })
 
   testLensLaws(helloLens, [obj, "patrik"])
 
@@ -171,4 +173,31 @@ test("some", () => {
   expect(optional.getOption(obj2)).toEqual(Option.none())
 
   testOptionalLaws(optional, [obj1, "b"], [obj2, "b"])
+})
+
+test("pick", () => {
+  const lens = pipe(
+    objLens,
+    Lens.prop("another"),
+    Lens.pick("n", "world")
+  )
+
+  expect(lens.set(obj, { world: "new", n: 2 })).toEqual({ ...obj, another: { hello: "world", world: "new", n: 2 } })
+
+  expect(lens.get(obj)).toEqual({ n: 1, world: "test" })
+
+  testLensLaws(lens, [obj, { world: "new", n: 2 }])
+})
+
+test("modify", () => {
+  const lens = pipe(
+    objLens,
+    Lens.prop("another"),
+    Lens.pick("n", "world")
+  )
+
+  expect(lens.modify(obj, ({ n, world }) => ({ world, n: n + 1 }))).toEqual({
+    ...obj,
+    another: { hello: "world", world: "test", n: 2 }
+  })
 })

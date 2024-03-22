@@ -34,6 +34,12 @@ export interface Lens<Self, Value> extends Lens.Variance<Self, Value>, Pipeable.
     (self: Self, value: Value): Self
     (value: Value): (self: Self) => Self
   }
+
+  // derived
+  readonly modify: {
+    (self: Self, f: (value: Value) => Value): Self
+    (f: (value: Value) => Value): (self: Self) => Self
+  }
 }
 
 /**
@@ -249,3 +255,20 @@ export const extract: {
     tagValue: TagValue
   ): <Self>(lens: Lens<Self, Value>) => Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValue }>>
 } = internal.extract
+
+/**
+ * `L.props` alternative
+ *
+ * @category struct
+ * @since 1.0.0
+ */
+export const pick: {
+  <Value, Keys extends keyof Value>(
+    ...keys: readonly [Keys, Keys, ...ReadonlyArray<Keys>]
+  ): <Self>(lens: Lens<Self, Value>) => Lens<Self, { [K in Keys]: Value[K] }>
+
+  <Self, Value, Keys extends keyof Value>(
+    lens: Lens<Self, Value>,
+    ...keys: readonly [Keys, Keys, ...ReadonlyArray<Keys>]
+  ): Lens<Self, { [K in Keys]: Value[K] }>
+} = internal.pick
