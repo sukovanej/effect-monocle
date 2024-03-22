@@ -28,6 +28,14 @@ export class LensImpl<Self, Value> implements Lens.Lens<Self, Value> {
     // eslint-disable-next-line prefer-rest-params
     return Pipeable.pipeArguments(this, arguments)
   }
+
+  get modify() {
+    return dual(2, (self: Self, f: (value: Value) => Value) => {
+      const currentValue = this.get(self)
+      const newValue = f(currentValue)
+      return currentValue === newValue ? self : this.set(newValue)(self)
+    })
+  }
 }
 
 /** @internal */
