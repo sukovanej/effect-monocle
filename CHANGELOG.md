@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.3.1
+
+### Patch Changes
+
+- [#6](https://github.com/sukovanej/effect-monocle/pull/6) [`5796d12`](https://github.com/sukovanej/effect-monocle/commit/5796d1288156093f2eba7da20f04e857f778cc75) Thanks [@Avantiny](https://github.com/Avantiny)! - fix set in \_prop for lens
+
 ## 0.3.0
 
 ### Minor Changes
