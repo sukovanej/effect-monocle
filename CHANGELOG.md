@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.4.0
+
+### Minor Changes
+
+- [`6563744`](https://github.com/sukovanej/effect-monocle/commit/6563744a7c2c556b457a862437746577651c2379) Thanks [@sukovanej](https://github.com/sukovanej)! - `Lens.extract` / `Optional.extract` accept multiple matching values
+
 ## 0.3.2
 
 ### Patch Changes
