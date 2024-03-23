@@ -156,15 +156,30 @@ export const filter: typeof Lens.filter = dual(2, <A, B extends A, Self>(
   ))
 
 /** @internal */
-export const extract = dual(3 as any, <Self, Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+export const extract = (first: any, ...args: readonly [any, ...Array<any>]): any => {
+  if (isLens(first)) {
+    // @ts-expect-error
+    return _extract(first, ...args)
+  }
+
+  return (lens: Lens.Lens.Any) => _extract(lens, first, ...args)
+}
+
+/** @internal */
+const _extract = <
+  Self,
+  Value,
+  const Tag extends keyof Value,
+  const TagValues extends readonly [Value[Tag], ...Array<Value[Tag]>]
+>(
   lens: Lens.Lens<Self, Value>,
   tag: Tag,
-  tagValue: TagValue
-): Optional.Optional<Self, Extract<Value, { [_ in Tag]: TagValue }>> =>
+  ...tagValues: TagValues
+): Optional.Optional<Self, Extract<Value, { [_ in Tag]: TagValues[number] }>> =>
   filter(
     lens,
-    (value): value is Extract<Value, { [K in Tag]: TagValue }> => value[tag] === tagValue
-  ))
+    (value): value is Extract<Value, { [K in Tag]: TagValues[number] }> => tagValues.includes(value[tag])
+  )
 
 /** @internal */
 export const some = <A, B>(that: Lens.Lens<A, Option.Option<B>>): Optional.Optional<A, B> =>
@@ -195,7 +210,11 @@ const _pick = <Self, Value>(
   lens: Lens.Lens<Self, Value>,
   keys: ReadonlyArray<string>
 ) =>
-  make<Self, Value>((self) => Struct.pick(lens.get(self), ...keys as any) as any, (self, value) => {
-    const v = lens.get(self)
-    return lens.set(self, { ...v, ...value })
-  })
+  make<Self, Value>(
+    // @ts-expect-error
+    (self) => Struct.pick(lens.get(self), ...keys),
+    (self, value) => {
+      const v = lens.get(self)
+      return lens.set(self, { ...v, ...value })
+    }
+  )

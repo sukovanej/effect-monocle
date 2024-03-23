@@ -244,16 +244,16 @@ export const filter: {
  * @since 1.0.0
  */
 export const extract: {
-  <Self, Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+  <Self, Value, const Tag extends keyof Value, const TagValues extends readonly [Value[Tag], ...Array<Value[Tag]>]>(
     lens: Lens<Self, Value>,
     tag: Tag,
-    tagValue: TagValue
-  ): Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValue }>>
+    ...tagValue: TagValues
+  ): Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValues[number] }>>
 
-  <Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+  <Value, const Tag extends keyof Value, const TagValues extends readonly [Value[Tag], ...Array<Value[Tag]>]>(
     tag: Tag,
-    tagValue: TagValue
-  ): <Self>(lens: Lens<Self, Value>) => Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValue }>>
+    ...tagValue: TagValues
+  ): <Self>(lens: Lens<Self, Value>) => Optional.Optional<Self, Extract<Value, { [K in Tag]: TagValues[number] }>>
 } = internal.extract
 
 /**

@@ -80,7 +80,7 @@ export const _prop = (optional: Optional.Optional.Any, props: ReadonlyArray<stri
         return self
       }
 
-      return optional.set(v, _setPropNested(v.value, value, props))
+      return optional.set(self, _setPropNested(v.value, value, props))
     }
   )
 }
@@ -203,15 +203,30 @@ export const filter: typeof Optional.filter = dual(2, <A, B extends A, Self>(
   ))
 
 /** @internal */
-export const extract = dual(3 as any, <Self, Value, const Tag extends keyof Value, const TagValue extends Value[Tag]>(
+export const extract = (first: any, ...args: readonly [any, ...Array<any>]): any => {
+  if (isOptional(first)) {
+    // @ts-expect-error
+    return _extract(first, ...args)
+  }
+
+  return (optional: Optional.Optional.Any) => _extract(optional, first, ...args)
+}
+
+/** @internal */
+const _extract = <
+  Self,
+  Value,
+  const Tag extends keyof Value,
+  const TagValues extends readonly [Value[Tag], ...Array<Value[Tag]>]
+>(
   lens: Optional.Optional<Self, Value>,
   tag: Tag,
-  tagValue: TagValue
-): Optional.Optional<Self, Extract<Value, { [_ in Tag]: TagValue }>> =>
+  ...tagValues: TagValues
+): Optional.Optional<Self, Extract<Value, { [_ in Tag]: TagValues[number] }>> =>
   filter(
     lens,
-    (value): value is Extract<Value, { [K in Tag]: TagValue }> => value[tag] === tagValue
-  ))
+    (value): value is Extract<Value, { [K in Tag]: TagValues[number] }> => tagValues.includes(value[tag])
+  )
 
 /** @internal */
 export const composeLens = dual(

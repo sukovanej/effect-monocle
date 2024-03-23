@@ -197,3 +197,33 @@ test("some", () => {
 
   testOptionalLaws(optional, [obj1, "b"], [obj2, "b"])
 })
+
+test("nested set works", () => {
+  const a = { a: { b: { c: 1 } } }
+  const optional = pipe(Optional.id<typeof a>(), Optional.prop("a"), Optional.prop("b"))
+
+  expect(optional.set(a, { c: 2 })).toEqual({ a: { b: { c: 2 } } })
+
+  testOptionalLaws(optional, [a, { c: 2 }])
+})
+
+test("extract by multiple values", () => {
+  type A = { type: "a"; value: number } | { type: "b"; value: number } | { type: "c"; another: string }
+
+  const optional = pipe(Optional.id<A>(), Optional.extract("type", "a", "b"), Optional.prop("value"))
+
+  const a: A = { type: "a", value: 68 }
+  const b: A = { type: "b", value: 68 }
+  const c: A = { type: "c", another: "str" }
+
+  expect(optional.getOption(a)).toEqual(Option.some(68))
+  expect(optional.set(a, 69)).toEqual({ type: "a", value: 69 })
+
+  expect(optional.getOption(b)).toEqual(Option.some(68))
+  expect(optional.set(b, 69)).toEqual({ type: "b", value: 69 })
+
+  expect(optional.getOption(c)).toEqual(Option.none())
+  expect(optional.set(c, 69)).toEqual({ type: "c", another: "str" })
+
+  testOptionalLaws(optional, [a, 69], [b, 69], [c, 69])
+})
