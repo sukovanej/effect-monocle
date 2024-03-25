@@ -35,6 +35,7 @@ Notably,
   `pipe(lens, Lens.prop('a'), Lens.prop('b'), Lens.prop('c'))`.
 - I renamed `Lens.props` / `Optional.props` to `Lens.pick` / `Optional.pick` to unify the naming
   with `@effect/schema`, `effect/Struct`, etc.
+- The `Lens<S, A>` has a `modify` method so it should be used insteadf of  `L.modify` 
 
 Please refer to the [monocle-ts README](https://github.com/gcanti/monocle-ts) and
 the [effect-monocle API docs](https://sukovanej.github.io/effect-monocle/) for more information.
