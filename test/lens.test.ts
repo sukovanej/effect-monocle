@@ -1,3 +1,4 @@
+import { Schema } from "@effect/schema"
 import { Option, pipe } from "effect"
 import { Lens, Optional } from "effect-monocle"
 import { expect, test } from "vitest"
@@ -230,4 +231,30 @@ test("extract by multiple values", () => {
   expect(optional.set(c, 69)).toEqual({ type: "c", another: "str" })
 
   testOptionalLaws(optional, [a, 69], [b, 69], [c, 69])
+})
+
+test("behaves correctly with classes", () => {
+  class MyType extends Schema.Class<MyType>("MyType")({
+    x: Schema.struct({
+      y: Schema.string
+    }),
+    z: Schema.string
+  }) {
+    get y() {
+      return this.x.y
+    }
+  }
+
+  const yLens = pipe(Lens.id<MyType>(), Lens.prop("x", "y"))
+  const zLens = pipe(Lens.id<MyType>(), Lens.prop("z"))
+
+  const value = new MyType({ x: { y: "hello" }, z: "world" })
+  expect(value.y).toEqual("hello")
+
+  const new1 = yLens.set(value, "test")
+  expect(new1.y).toEqual("test")
+
+  const new2 = zLens.set(value, "test")
+  expect(new2.z).toEqual("test")
+  expect(new2.y).toEqual("hello")
 })

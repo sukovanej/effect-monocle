@@ -58,7 +58,9 @@ const _setPropNested = (self: any, value: any, [prop, ...props]: ReadonlyArray<s
       return self
     }
 
-    return Object.assign({}, self, { [prop]: value })
+    const newSelf = Object.assign({}, self, { [prop]: value })
+    Object.setPrototypeOf(newSelf, Object.getPrototypeOf(self))
+    return newSelf
   }
 
   const oldValue = self[prop]
@@ -68,7 +70,9 @@ const _setPropNested = (self: any, value: any, [prop, ...props]: ReadonlyArray<s
     return self
   }
 
-  return Object.assign({}, self, { [prop]: newValue })
+  const newSelf = Object.assign({}, self, { [prop]: newValue })
+  Object.setPrototypeOf(newSelf, Object.getPrototypeOf(self))
+  return newSelf
 }
 
 /** @internal */
