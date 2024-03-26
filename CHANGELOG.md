@@ -1,5 +1,13 @@
 # effect-monocle
 
+## 0.4.2
+
+### Patch Changes
+
+- [`54f9f98`](https://github.com/sukovanej/effect-monocle/commit/54f9f981ec39af6be4d5772593a9b9d4468284aa) Thanks [@sukovanej](https://github.com/sukovanej)! - Set object prototype within `Lens.set` / `Optional.set`.
+
+- [`54f9f98`](https://github.com/sukovanej/effect-monocle/commit/54f9f981ec39af6be4d5772593a9b9d4468284aa) Thanks [@sukovanej](https://github.com/sukovanej)! - Update effect.
+
 ## 0.4.1
 
 ### Patch Changes
