@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.4.3
+
+### Patch Changes
+
+- [`fcfb4a9`](https://github.com/sukovanej/effect-monocle/commit/fcfb4a966cebbc62ce51a9b9f582bc96eea62fec) Thanks [@sukovanej](https://github.com/sukovanej)! - Simplify types with array.
+
 ## 0.4.2
 
 ### Patch Changes
