@@ -181,20 +181,12 @@ export const some: <A, B>(lens: Lens<A, Option.Option<B>>) => Optional.Optional<
  * @since 1.0.0
  */
 export const append: {
-  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>, self: Self, last: A): Self
-  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>): {
-    (self: Self, last: A): Self
-    (last: A): (self: Self) => Self
-  }
-
-  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>, self: Self, last: A): Self
-  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>): {
-    (self: Self, last: A): Self
-    (last: A): (self: Self) => Self
-  }
-
-  <Self, A>(lens: Lens<Self, Array<A>>, self: Self, last: A): Self
-  <Self, A>(lens: Lens<Self, Array<A>>): {
+  <Self, A>(
+    lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>,
+    self: Self,
+    last: A
+  ): Self
+  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>): {
     (self: Self, last: A): Self
     (last: A): (self: Self) => Self
   }
@@ -205,14 +197,8 @@ export const append: {
  * @since 1.0.0
  */
 export const appendAll: {
-  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>, self: Self, that: ReadonlyArray<A>): Self
-  <Self, A>(lens: Lens<Self, ReadonlyArray<A>>): {
-    (self: Self, that: ReadonlyArray<A>): Self
-    (that: ReadonlyArray<A>): (self: Self) => Self
-  }
-
-  <Self, A>(lens: Lens<Self, Array<A>>, self: Self, that: ReadonlyArray<A>): Self
-  <Self, A>(lens: Lens<Self, Array<A>>): {
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>, self: Self, that: ReadonlyArray<A>): Self
+  <Self, A>(lens: Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>): {
     (self: Self, that: ReadonlyArray<A>): Self
     (that: ReadonlyArray<A>): (self: Self) => Self
   }
@@ -222,10 +208,9 @@ export const appendAll: {
  * @category array
  * @since 1.0.0
  */
-export const headNonEmpty: {
-  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyReadonlyArray<A>>): Lens<Self, A>
-  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>>): Lens<Self, A>
-} = internal.headNonEmpty
+export const headNonEmpty: <Self, A>(
+  lens: Lens<Self, ReadonlyArray.NonEmptyReadonlyArray<A>> | Lens<Self, ReadonlyArray.NonEmptyArray<A>>
+) => Lens<Self, A> = internal.headNonEmpty
 
 /**
  * @category combinators

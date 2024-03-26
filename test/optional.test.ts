@@ -137,7 +137,7 @@ test("headNonEmpty", () => {
 
   testOptionalLaws(optional, [obj, 3])
 
-  const optional2 = Optional.prop(objOptional, "valuesNonEmpty").pipe((_) => Optional.headNonEmpty(_)) // TODO weird type inference
+  const optional2 = Optional.prop(objOptional, "valuesNonEmpty").pipe(Optional.headNonEmpty)
 
   expect(optional2.getOption(obj)).toEqual(Option.some(1))
   expect(optional2.set(obj, 3)).toEqual({ ...obj, valuesNonEmpty: [3, 2] })

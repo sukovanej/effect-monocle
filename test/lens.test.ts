@@ -20,7 +20,8 @@ const obj = {
     }
   },
   values: [1, 2],
-  valuesNonEmpty: [1, 2] as [number, ...Array<number>]
+  valuesNonEmpty: [1, 2] as readonly [number, ...Array<number>],
+  valuesNonEmptyMutable: [1, 2] as [number, ...Array<number>]
 }
 
 type Obj = typeof obj
@@ -108,19 +109,26 @@ test("appendAll", () => {
 })
 
 test("headNonEmpty", () => {
-  const lens = Lens.headNonEmpty(Lens.prop(objLens, "valuesNonEmpty"))
+  const lens = pipe(Lens.prop(objLens, "valuesNonEmpty"), Lens.headNonEmpty)
 
   expect(lens.get(obj)).toEqual(1)
   expect(lens.set(obj, 3)).toEqual({ ...obj, valuesNonEmpty: [3, 2] })
 
   testLensLaws(lens, [obj, 3])
 
-  const lens2 = Lens.prop(objLens, "valuesNonEmpty").pipe((_) => Lens.headNonEmpty(_)) // TODO weird type inference
+  const lens2 = Lens.prop(objLens, "valuesNonEmpty").pipe(Lens.headNonEmpty)
 
   expect(lens2.get(obj)).toEqual(1)
   expect(lens2.set(obj, 3)).toEqual({ ...obj, valuesNonEmpty: [3, 2] })
 
-  testLensLaws(lens, [obj, 3])
+  testLensLaws(lens2, [obj, 3])
+
+  const lens3 = pipe(Lens.prop(objLens, "valuesNonEmptyMutable"), Lens.headNonEmpty)
+
+  expect(lens3.get(obj)).toEqual(1)
+  expect(lens3.set(obj, 3)).toEqual({ ...obj, valuesNonEmptyMutable: [3, 2] })
+
+  testLensLaws(lens3, [obj, 3])
 })
 
 const obj2 = {

@@ -184,14 +184,8 @@ export const some: <A, B>(optional: Optional<A, Option.Option<B>>) => Optional<A
  * @since 1.0.0
  */
 export const append: {
-  <Self, A>(lens: Optional<Self, ReadonlyArray<A>>, self: Self, last: A): Self
-  <Self, A>(lens: Optional<Self, ReadonlyArray<A>>): {
-    (self: Self, last: A): Self
-    (last: A): (self: Self) => Self
-  }
-
-  <Self, A>(lens: Optional<Self, Array<A>>, self: Self, last: A): Self
-  <Self, A>(lens: Optional<Self, Array<A>>): {
+  <Self, A>(lens: Optional<Self, ReadonlyArray<A>> | Optional<Self, Array<A>>, self: Self, last: A): Self
+  <Self, A>(lens: Optional<Self, ReadonlyArray<A>> | Optional<Self, Array<A>>): {
     (self: Self, last: A): Self
     (last: A): (self: Self) => Self
   }
@@ -202,14 +196,8 @@ export const append: {
  * @since 1.0.0
  */
 export const appendAll: {
-  <Self, A>(lens: Optional<Self, ReadonlyArray<A>>, self: Self, that: ReadonlyArray<A>): Self
-  <Self, A>(lens: Optional<Self, ReadonlyArray<A>>): {
-    (self: Self, that: ReadonlyArray<A>): Self
-    (that: ReadonlyArray<A>): (self: Self) => Self
-  }
-
-  <Self, A>(lens: Optional<Self, Array<A>>, self: Self, that: ReadonlyArray<A>): Self
-  <Self, A>(lens: Optional<Self, Array<A>>): {
+  <Self, A>(lens: Optional<Self, ReadonlyArray<A>> | Optional<Self, Array<A>>, self: Self, that: ReadonlyArray<A>): Self
+  <Self, A>(lens: Optional<Self, ReadonlyArray<A>> | Optional<Self, Array<A>>): {
     (self: Self, that: ReadonlyArray<A>): Self
     (that: ReadonlyArray<A>): (self: Self) => Self
   }
@@ -219,10 +207,9 @@ export const appendAll: {
  * @category array
  * @since 1.0.0
  */
-export const headNonEmpty: {
-  <Self, A>(lens: Optional<Self, ReadonlyArray.NonEmptyReadonlyArray<A>>): Optional<Self, A>
-  <Self, A>(lens: Optional<Self, ReadonlyArray.NonEmptyArray<A>>): Optional<Self, A>
-} = internal.headNonEmpty
+export const headNonEmpty: <Self, A>(
+  lens: Optional<Self, ReadonlyArray.NonEmptyReadonlyArray<A>> | Optional<Self, ReadonlyArray.NonEmptyArray<A>>
+) => Optional<Self, A> = internal.headNonEmpty
 
 /**
  * @category combinators
