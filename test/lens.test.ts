@@ -243,10 +243,10 @@ test("extract by multiple values", () => {
 
 test("behaves correctly with classes", () => {
   class MyType extends Schema.Class<MyType>("MyType")({
-    x: Schema.struct({
-      y: Schema.string
+    x: Schema.Struct({
+      y: Schema.String
     }),
-    z: Schema.string
+    z: Schema.String
   }) {
     get y() {
       return this.x.y
