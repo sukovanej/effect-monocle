@@ -4,10 +4,10 @@
  * @since 1.0.0
  */
 
+import type * as Array from "effect/Array"
 import type * as Option from "effect/Option"
 import type * as Pipeable from "effect/Pipeable"
 import type * as Predicate from "effect/Predicate"
-import type * as ReadonlyArray from "effect/ReadonlyArray"
 import type * as Types from "effect/Types"
 import * as internal from "./internal/lens.js"
 import type * as Optional from "./Optional.js"
@@ -182,11 +182,11 @@ export const some: <A, B>(lens: Lens<A, Option.Option<B>>) => Optional.Optional<
  */
 export const append: {
   <Self, A>(
-    lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>,
+    lens: Lens<Self, Array.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>,
     self: Self,
     last: A
   ): Self
-  <Self, A>(lens: Lens<Self, ReadonlyArray.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>): {
+  <Self, A>(lens: Lens<Self, Array.NonEmptyArray<A>> | Lens<Self, ReadonlyArray<A>> | Lens<Self, Array<A>>): {
     (self: Self, last: A): Self
     (last: A): (self: Self) => Self
   }
@@ -209,7 +209,7 @@ export const appendAll: {
  * @since 1.0.0
  */
 export const headNonEmpty: <Self, A>(
-  lens: Lens<Self, ReadonlyArray.NonEmptyReadonlyArray<A>> | Lens<Self, ReadonlyArray.NonEmptyArray<A>>
+  lens: Lens<Self, Array.NonEmptyReadonlyArray<A>> | Lens<Self, Array.NonEmptyArray<A>>
 ) => Lens<Self, A> = internal.headNonEmpty
 
 /**

@@ -5,10 +5,10 @@
  */
 
 import type * as Lens from "effect-monocle/Lens"
+import type * as Array from "effect/Array"
 import type * as Option from "effect/Option"
 import type * as Pipeable from "effect/Pipeable"
 import type * as Predicate from "effect/Predicate"
-import type * as ReadonlyArray from "effect/ReadonlyArray"
 import type * as Types from "effect/Types"
 import * as internal from "./internal/optional.js"
 
@@ -208,7 +208,7 @@ export const appendAll: {
  * @since 1.0.0
  */
 export const headNonEmpty: <Self, A>(
-  lens: Optional<Self, ReadonlyArray.NonEmptyReadonlyArray<A>> | Optional<Self, ReadonlyArray.NonEmptyArray<A>>
+  lens: Optional<Self, Array.NonEmptyReadonlyArray<A>> | Optional<Self, Array.NonEmptyArray<A>>
 ) => Optional<Self, A> = internal.headNonEmpty
 
 /**

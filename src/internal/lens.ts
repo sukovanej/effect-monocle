@@ -1,7 +1,7 @@
+import * as Array from "effect/Array"
 import { dual, identity, pipe } from "effect/Function"
 import * as Option from "effect/Option"
 import * as Predicate from "effect/Predicate"
-import * as ReadonlyArray from "effect/ReadonlyArray"
 import * as Struct from "effect/Struct"
 import type * as Lens from "../Lens.js"
 import * as Optional from "../Optional.js"
@@ -108,7 +108,7 @@ export const append = (...args: ReadonlyArray<any>): any => {
 
 /** @internal */
 const _append = <Self, A>(lens: Lens.Lens<Self, ReadonlyArray<A>>, self: Self, last: A): Self =>
-  lens.set(self, ReadonlyArray.append(lens.get(self), last))
+  lens.set(self, Array.append(lens.get(self), last))
 
 /** @internal */
 export const appendAll = (...args: any): any => {
@@ -125,11 +125,11 @@ export const appendAll = (...args: any): any => {
 
 /** @internal */
 const _appendAll = <Self, A>(lens: Lens.Lens<Self, ReadonlyArray<A>>, self: Self, that: ReadonlyArray<A>): Self =>
-  lens.set(self, ReadonlyArray.appendAll(lens.get(self), that))
+  lens.set(self, Array.appendAll(lens.get(self), that))
 
 /** @internal */
 export const headNonEmpty = <Self, A>(
-  lens: Lens.Lens<Self, ReadonlyArray.NonEmptyArray<A>> | Lens.Lens<Self, ReadonlyArray.NonEmptyReadonlyArray<A>>
+  lens: Lens.Lens<Self, Array.NonEmptyArray<A>> | Lens.Lens<Self, Array.NonEmptyReadonlyArray<A>>
 ) =>
   make<Self, A>((self) => lens.get(self)[0], (self, value) => {
     const [head, ...rest] = lens.get(self)

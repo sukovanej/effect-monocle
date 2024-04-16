@@ -1,4 +1,4 @@
-import { ReadonlyArray } from "effect"
+import * as Array from "effect/Array"
 import { dual, pipe } from "effect/Function"
 import * as Option from "effect/Option"
 import * as Predicate from "effect/Predicate"
@@ -128,7 +128,7 @@ const _append = <Self, A>(lens: Optional.Optional<Self, ReadonlyArray<A>>, self:
     return self
   }
 
-  return lens.set(self, ReadonlyArray.append(v.value, last))
+  return lens.set(self, Array.append(v.value, last))
 }
 
 /** @internal */
@@ -156,14 +156,14 @@ const _appendAll = <Self, A>(
     return self
   }
 
-  return lens.set(self, ReadonlyArray.appendAll(v.value, that))
+  return lens.set(self, Array.appendAll(v.value, that))
 }
 
 /** @internal */
 export const headNonEmpty = <Self, A>(
   lens:
-    | Optional.Optional<Self, ReadonlyArray.NonEmptyArray<A>>
-    | Optional.Optional<Self, ReadonlyArray.NonEmptyReadonlyArray<A>>
+    | Optional.Optional<Self, Array.NonEmptyArray<A>>
+    | Optional.Optional<Self, Array.NonEmptyReadonlyArray<A>>
 ) =>
   make<Self, A>(
     (self) => Option.map(lens.getOption(self), (arr) => arr[0]),
