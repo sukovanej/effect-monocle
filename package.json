@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/sukovanej/effect-monocle/issues"
   },
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@9.0.4",
   "publishConfig": {
     "access": "public",
     "directory": "dist"
@@ -46,7 +46,7 @@
     "@effect/docgen": "^0.4.3",
     "@effect/eslint-plugin": "^0.1.2",
     "@effect/language-service": "^0.1.0",
-    "@effect/schema": "^0.66.3",
+    "@effect/schema": "^0.66.4",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "@vitest/coverage-v8": "^1.5.0",
@@ -71,8 +71,10 @@
     "effect": "^3.0.0"
   },
   "pnpm": {
-    "patchedDependencies": {
-      "@changesets/assemble-release-plan@6.0.0": "patches/@changesets__assemble-release-plan@6.0.0.patch"
+    "updateConfig": {
+      "ignoreDependencies": [
+        "eslint"
+      ]
     }
   }
 }
