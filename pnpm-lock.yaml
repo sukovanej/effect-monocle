@@ -41,8 +41,8 @@ devDependencies:
     specifier: ^0.1.0
     version: 0.1.0
   '@effect/schema':
-    specifier: ^0.66.0
-    version: 0.66.0(effect@3.0.0)(fast-check@3.17.1)
+    specifier: ^0.66.3
+    version: 0.66.3(effect@3.0.3)(fast-check@3.17.1)
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.7.0
     version: 7.7.0(@typescript-eslint/parser@7.7.0)(eslint@8.57.0)(typescript@5.4.5)
@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^0.4.0
     version: 0.4.0(@babel/core@7.24.4)
   effect:
-    specifier: 3.0.0
-    version: 3.0.0
+    specifier: 3.0.3
+    version: 3.0.3
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -656,13 +656,13 @@ packages:
       strip-color: 0.1.0
     dev: true
 
-  /@effect/schema@0.66.0(effect@3.0.0)(fast-check@3.17.1):
-    resolution: {integrity: sha512-wbmA4vQ0OswEwBt+vWn4oEgw2QdEDchPiNNisPCHvSy5e5qH0usfppJ3fNX9cwrCz6jEQTCE42Q/7Was2BhVHg==}
+  /@effect/schema@0.66.3(effect@3.0.3)(fast-check@3.17.1):
+    resolution: {integrity: sha512-b4rhUmwFWvuzRNLOPvCdk9QFdGouBKQ5u23GAthQWxhZLSGLkzTm6OSI3rzqL+fCVr4+oWK2kgotG+RWTX2R4A==}
     peerDependencies:
-      effect: ^3.0.0
+      effect: ^3.0.3
       fast-check: ^3.13.2
     dependencies:
-      effect: 3.0.0
+      effect: 3.0.3
       fast-check: 3.17.1
     dev: true
 
@@ -2579,8 +2579,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /effect@3.0.0:
-    resolution: {integrity: sha512-8yVxuahojpD8Y6ynrvIlSWD2xsea/PyGnjA4V5c7v0fOMJafgsKUNUHErBAr6YoPikmtOfR9zqNWRd9u5QaWEQ==}
+  /effect@3.0.3:
+    resolution: {integrity: sha512-mgG+FoWrM4sny8OxDFWCpq+6LwGf9cK/JztVhxZQeZM9ZMXY+lKbdMEQmemNYce0QVAz2+YqUKwhKzOidwbZzg==}
     dev: true
 
   /electron-to-chromium@1.4.731:
