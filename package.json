@@ -1,7 +1,7 @@
 {
   "name": "effect-monocle",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "author": "Milan Suk <Milansuk@email.cz>",
   "description": "Port of some monocle-ts features to effect-ts",
