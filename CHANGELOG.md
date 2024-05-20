@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.5.2
+
+### Patch Changes
+
+- [`11dd152`](https://github.com/sukovanej/effect-monocle/commit/11dd152f8b6619b200962357b9fd7b5c11c447eb) Thanks [@sukovanej](https://github.com/sukovanej)! - Update effect.
+
 ## 0.5.1
 
 ### Patch Changes
