@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.5.5
+
+### Patch Changes
+
+- [`fb48dcd`](https://github.com/sukovanej/effect-monocle/commit/fb48dcd6f1b154093bf31a187942b1d0b606016c) Thanks [@sukovanej](https://github.com/sukovanej)! - Update dependencies.
+
 ## 0.5.4
 
 ### Patch Changes
