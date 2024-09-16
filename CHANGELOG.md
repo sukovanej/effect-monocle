@@ -1,5 +1,11 @@
 # effect-monocle
 
+## 0.7.0
+
+### Minor Changes
+
+- [`c0b4640`](https://github.com/sukovanej/effect-monocle/commit/c0b46409dc86e387095197d5e5f73cc6bfff2a10) Thanks [@sukovanej](https://github.com/sukovanej)! - Update effect.
+
 ## 0.6.0
 
 ### Minor Changes
